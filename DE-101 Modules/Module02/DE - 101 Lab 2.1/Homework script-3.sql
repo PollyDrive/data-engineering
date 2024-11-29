@@ -32,3 +32,6 @@ where order_id in (select distinct order_id from "returns")
 
 select date_trunc('day', now())
 
+
+
+
