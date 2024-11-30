@@ -86,4 +86,53 @@ WHERE laptop.speed < ALL
 (select speed from pc)
 AND product.type='Laptop'
 
+-----
+18 mistakes
+/*Select distinct maker, product.type, (select min(price)
+from printer
+) as price 
+from product
+join printer p on p.model = product.model
+where p.color='y'
+---
+Select distinct maker, (select min(price)
+from printer
+where printer.color='y'
+) as price
+from printer
+inner join product p on p.model = printer.model
+----
+Select min(price) as min_price
+from (
+    select price
+    FROM printer
+    inner join product p on p.model = printer.model
+    WHERE printer.color='y'
+) as sub
+----
+SELECT prod.maker, new.price_min price
+FROM (SELECT MIN(price) price_min 
+   FROM Printer 
+   WHERE Color ='y'
+ ) new
+INNER JOIN Printer prin ON new.price_min = prin.price 
+INNER JOIN Product prod ON prin.model = prod.model
+----
+Select maker, min(price) as price
+FROM printer pr
+inner join product p on p.model = pr.model
+WHERE pr.color='y'  */
+
+--------
+correct 18
+
+Select distinct prod.maker, new_table.min_price as price
+from (
+    select min(price) min_price
+    FROM printer
+WHERE printer.color='y'
+) new_table
+join printer prin on prin.price = new_table.min_price
+join product prod on prod.model = prin.model
+WHERE prin.color='y'
 
