@@ -167,12 +167,27 @@ where speed>600
 group by speed
 
 23
-/* неправильный ответ
+/* неправильные ответы
+ 23.1
 Select distinct maker
 from product
 join pc p on p.model=product.model and p.speed>=750
 left join laptop l on l.model=product.model and l.speed>=750
-*/
 
+ 23.2
+select distinct maker
+from (
+Select model from laptop l
+where l.speed >=750
+union
+Select model from pc
+where pc.speed >=750
+) newT
+join product p on p.model=newT.model
+
+AFTER FAQ
+Задача сформулирована неоднозначно: нужны были производители, которые производят pc И laptop со скорость не менее 750
+*
+*/
 
 
