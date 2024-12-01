@@ -136,3 +136,43 @@ join printer prin on prin.price = new_table.min_price
 join product prod on prod.model = prin.model
 WHERE prin.color='y'
 
+----
+19
+Select p.maker, avg(screen)
+from laptop l
+join product p on p.model = l.model
+group by p.maker
+
+----
+20
+/* по условию непонятно, с какими таблицами надо работать. Дрочилась с джойнами, хотя можно было одной обойтись*/
+select 
+maker,
+COUNT(distinct model) AS q
+from product
+where type='pc'
+group by maker
+having COUNT(model)>=3
+
+21
+Select maker, max(price) as max
+from pc
+join product p on p.model=pc.model
+group by maker
+
+22
+Select speed, avg(price)
+from pc
+where speed>600
+group by speed
+
+23
+/* неправильный ответ
+Select distinct maker
+from product
+join pc p on p.model=product.model and p.speed>=750
+left join laptop l on l.model=product.model and l.speed>=750
+*/
+
+
+
