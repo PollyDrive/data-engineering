@@ -186,8 +186,60 @@ where pc.speed >=750
 join product p on p.model=newT.model
 
 AFTER FAQ
-Задача сформулирована неоднозначно: нужны были производители, которые производят pc И laptop со скорость не менее 750
+Задача сформулирована неоднозначно: нужны были производители,
+которые производят pc И laptop со скорость не менее 750
 *
+Один хуй ничо непонятно
+
+23.3
+select distinct maker
+from product a, pc b, laptop c
+where ((b.speed >=750 and c.speed >=750)
+AND 
+b.model = a.model)
+OR
+((b.speed >=750 and c.speed >=750)
+AND 
+c.model = a.model)
+
+23.4
+Select distinct maker
+from 
+(select maker
+from product a
+join pc b on b.model=a.model
+where b.speed>=750) x,
+(Select *
+from laptop c
+where c.speed>=750) y
+
+23.5
+select distinct maker
+from (
+select model
+from pc
+where pc.speed>=750
+union
+select model
+from laptop l
+where l.speed>=750
+) x,
+product p
+where p.model=x.model
+
 */
+
+23 correct
+
+select p.maker
+from product p
+join pc on p.model = pc.model
+where pc.speed >= 750
+intersect
+
+select p.maker
+from product p
+join laptop l on p.model = l.model
+where l.speed >=750
 
 
